@@ -1,0 +1,63 @@
+@use "./../mixin/" as *;
+
+.preloader {
+  position: fixed;
+  z-index: 1000000;
+  inset: 0;
+  background-color: var(--white-1);
+  overflow: hidden;
+}
+
+.preloader__count {
+  --size: 3.2rem;
+  --font-size: calc(var(--size) * 0.75);
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  justify-content: start;
+  align-content: center;
+}
+
+.preloader__count__digit {
+  width: var(--size);
+  aspect-ratio: 1/1;
+  font-size: var(--font-size);
+  overflow: hidden;
+  position: relative;
+  display: grid;
+  justify-items: center;
+}
+
+.preloader__count__digit--hundred {
+}
+
+.preloader__count__digit--ten {
+}
+
+.preloader__count__digit--one {
+}
+
+.preloader__count__roll {
+  position: absolute;
+  transition-duration: 0.2s;
+  translate: 0 calc(-100% * var(--progress));
+}
+
+.preloader__count__digit--hundred .preloader__count__roll {
+  translate: 0 calc(-10% * var(--progress));
+}
+
+.preloader__count__num {
+  width: var(--size);
+  aspect-ratio: 1/1;
+  line-height: 1;
+  place-items: center;
+  display: grid;
+}
+
+.preloader__text {
+}
+
+.preloader__assets {
+  opacity: 0;
+  visibility: hidden;
+}
