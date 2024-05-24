@@ -1,0 +1,60 @@
+@use "./../mixin/" as *;
+
+.archive-basic {
+}
+.archive-basic__item {
+  position: relative;
+  z-index: 0;
+  display: grid;
+  grid-template-columns: calc(var(--col) * 3) 1fr;
+  column-gap: calc(var(--col) * 1);
+  align-items: center;
+  padding-top: 2.8rem;
+  padding-bottom: 2.8rem;
+  font-size: 1.5rem;
+  line-height: 2;
+  letter-spacing: 0.1em;
+  border-bottom: 0.1rem solid var(--gray-1);
+}
+.archive-basic__item__link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.archive-basic__item__meta {
+}
+.archive-basic__item__meta__date {
+}
+.archive-basic__item__body {
+}
+.archive-basic__item__body__text {
+}
+
+@include mq(sp) {
+  .archive-basic {
+  }
+  .archive-basic__item {
+    grid-template-columns: auto;
+    padding-inline: calc(var(--col) * 1 / 4);
+    padding-top: 1.6rem;
+    padding-bottom: 1.6rem;
+    font-size: 1.3rem;
+    border-bottom: 0.1rem solid var(--gray-1);
+  }
+  .archive-basic__item:nth-of-type(1) {
+    border-top: 0.1rem solid var(--gray-1);
+  }
+  .archive-basic__item__link {
+  }
+  .archive-basic__item__meta {
+    line-height: 2;
+    font-size: 1.3rem;
+  }
+  .archive-basic__item__meta__date {
+  }
+  .archive-basic__item__body {
+    line-height: 2;
+  }
+  .archive-basic__item__body__text {
+  }
+}

@@ -1,6 +1,7 @@
 import { OrbitControls } from "@react-three/drei";
+import { FC } from "react";
 
-export const Experience = () => {
+export const Experience: FC = () => {
   return (
     <>
       <OrbitControls />

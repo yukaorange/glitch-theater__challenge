@@ -1,0 +1,7 @@
+@use "./../mixin/" as *;
+
+.drawer-button {
+  width: 2.4rem;
+  height: 2.4rem;
+  background-color: var(--black-1);
+}

@@ -1,0 +1,65 @@
+@use "./../mixin/" as *;
+
+.spacer {
+  padding: 4rem;
+}
+
+.container {
+  margin-top: 20rem;
+  padding-inline: calc(13.3rem + var(--col) * 1);
+}
+
+.guide {
+  display: grid;
+  aspect-ratio: 1/1;
+  margin-inline: 13.3rem;
+  position: relative;
+  z-index: 0;
+  border-left: 0.1rem solid var(--black-1);
+}
+
+.guide__row {
+  width: 100%;
+  border-bottom: 0.1rem solid var(--black-1); // 上辺に横線を追加
+  grid-row: span 1;
+}
+.guide__row:nth-child(1) {
+  width: 100%;
+  border-top: 0.1rem solid var(--black-1); // 上辺に横線を追加
+  grid-row: span 1;
+}
+
+@for $i from 0 through 28 {
+  .guide__line:nth-child(#{$i}) {
+    position: absolute;
+    z-index: 1;
+    height: 100%;
+    top: 0;
+    left: calc(var(--col) * #{$i});
+    border-right: 0.1rem solid var(--black-1);
+  }
+}
+
+@include mq(sp) {
+  @for $i from 0 through 14 {
+    .guide__line:nth-child(#{$i}) {
+      position: absolute;
+      z-index: 1;
+      height: 100%;
+      top: 0;
+      left: calc(var(--col) * #{$i});
+      border-right: 0.1rem solid var(--black-1);
+    }
+  }
+}
+
+@include mq(sp) {
+  .spacer {
+    padding: 3.2rem;
+  }
+
+  .container {
+    margin-top: 15rem;
+    padding-inline: calc(2rem);
+  }
+}
