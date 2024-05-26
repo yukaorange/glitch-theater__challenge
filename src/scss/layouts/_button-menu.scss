@@ -1,0 +1,29 @@
+@use "./../mixin/" as *;
+
+.button-menu {
+  font-size: 1.5rem;
+  position: fixed;
+  z-index: 100;
+  bottom: 2rem;
+  border: 0.1rem solid var(--white-1);
+  text-transform: uppercase;
+  padding: 0.8rem 1.6rem 1.1rem;
+  right: calc(var(--col) * 1);
+  color: var(--white-1);
+  mix-blend-mode: difference;
+}
+
+@include mq(sp) {
+  .button-menu {
+    font-size: 1.3rem;
+    position: fixed;
+    z-index: 100;
+    bottom: 2rem;
+    border: 0.1rem solid var(--white-1);
+    text-transform: uppercase;
+    padding: 0.8rem 1.6rem 1.1rem;
+    right: calc(var(--col) * 1);
+    color: var(--white-1);
+    mix-blend-mode: difference;
+  }
+}
