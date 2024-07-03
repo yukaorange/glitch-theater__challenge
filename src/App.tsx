@@ -6,25 +6,26 @@ import { Sns } from '@/components/Sns'
 import { MenuButton } from '@/components/MenuButton'
 import { Loader } from '@react-three/drei'
 import { useControls, Leva } from 'leva'
-import { useRef } from 'react'
+import { Suspense, useRef } from 'react'
 
 const App = () => {
   return (
     <>
       <Leva collapsed />
-      <Loader />
       <MenuButton />
       <Sns />
       <Canvas
-        shadows
         camera={{
-          position: [50, 20, 50],
+          position: [0, 0, 5],
           fov: 45,
         }}
       >
         <Perf position="top-left" />
-        <Experience />
+        <Suspense fallback={null}>
+          <Experience />
+        </Suspense>
       </Canvas>
+      <Loader />
     </>
   )
 }
