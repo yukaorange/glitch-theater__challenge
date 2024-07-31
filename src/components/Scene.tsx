@@ -4,9 +4,13 @@ Command: npx gltfjsx@6.2.16 public/models/scene.glb -o src/components/Scene.tsx 
 */
 
 import * as THREE from 'three'
-import React, { useRef } from 'react'
+import React, { useRef, useLayoutEffect, JSX, useState } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
+import { useEffect } from 'react'
+import { useFrame } from '@react-three/fiber'
+import { getCustomData } from 'r3f-perf'
+import { Logger } from 'sass'
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -50,11 +54,115 @@ type ContextType = Record<
   React.ForwardRefExoticComponent<JSX.IntrinsicElements['mesh']>
 >
 
-export function MOdel(props: JSX.IntrinsicElements['group']) {
+interface ModelProps {
+  index: number
+  totalModels: number
+  scroll: number
+  updateSceneHeight: (index: number, height: number) => void
+  getTotalHeight: () => number
+}
+
+const Model = ({
+  index,
+  totalModels,
+  scroll,
+  updateSceneHeight,
+  getTotalHeight,
+}: ModelProps & JSX.IntrinsicElements['group']) => {
   const { nodes, materials } = useGLTF('/models/scene.glb') as GLTFResult
+
+  const codeRef = useRef<number>(0)
+
+  let colorByIndex = 0xff0000
+  if (index === 1) {
+    colorByIndex = 0x00ff00
+  }
+  if (index === 2) {
+    colorByIndex = 0x0000ff
+  }
+  if (index === 3) {
+    colorByIndex = 0xffff00
+  }
+  if (index === 4) {
+    colorByIndex = 0x00ffff
+  }
+
+  const ceilMaterial = new THREE.MeshStandardMaterial({
+    color: colorByIndex,
+    side: THREE.DoubleSide,
+  })
+  const ceilFrameMaterial = new THREE.MeshStandardMaterial({
+    color: 0x000000,
+    side: THREE.DoubleSide,
+  })
+  const floorMaterial = new THREE.MeshStandardMaterial({
+    color: 0x000000,
+    side: THREE.DoubleSide,
+  })
+
+  const groupRef = useRef<THREE.Group | null>(null)
+  const initialPositionRef = useRef(0)
+  const currentPositionRef = useRef(0)
+
+  const sceneHeightRef = useRef(0)
+
+  const calcSceneHeight = () => {
+    if (groupRef.current) {
+      let height
+
+      const box = new THREE.Box3().setFromObject(groupRef.current)
+      const size = box.getSize(new THREE.Vector3())
+      const spacer = 0
+
+      height = size.y + spacer
+
+      return height
+    }
+
+    return 0
+  }
+
+  useEffect(() => {
+    if (groupRef.current) {
+      sceneHeightRef.current = calcSceneHeight()
+
+      updateSceneHeight(index, sceneHeightRef.current)
+
+      initialPositionRef.current = index * sceneHeightRef.current
+      currentPositionRef.current = initialPositionRef.current
+
+      groupRef.current.position.y = initialPositionRef.current
+    }
+  }, [])
+
+  useFrame(() => {
+    if (groupRef.current) {
+      const totalHeight = getTotalHeight()
+
+      let newPosition = initialPositionRef.current + scroll
+
+      const offsetCount = 2
+      const offset = sceneHeightRef.current * offsetCount
+
+      const wrapThreshold = sceneHeightRef.current * 0.1
+
+      if (newPosition > offset - wrapThreshold) {
+        initialPositionRef.current -= totalHeight
+        groupRef.current.position.y -= totalHeight
+      } else if (newPosition < -totalHeight + offset + wrapThreshold) {
+        initialPositionRef.current += totalHeight
+        groupRef.current.position.y += totalHeight
+      }
+
+      currentPositionRef.current = newPosition
+
+      groupRef.current.position.y = newPosition
+    }
+  })
+
   return (
-    <group {...props} dispose={null}>
-      <group position={[0, 31.745, 0]}>
+    <group dispose={null} scale={0.1} ref={groupRef}>
+      <group position={[0, 31.745, 0]} scale={[0.845, 1, 0.393]}>
         <mesh
           geometry={nodes.wire_01.geometry}
           material={materials.cable}
@@ -107,13 +215,14 @@ export function MOdel(props: JSX.IntrinsicElements['group']) {
       </group>
       <group
         position={[0.021, 32.744, 11.615]}
-        rotation={[0, Math.PI / 2, 0]}
+        rotation={[0, 1.571, 0]}
         scale={1.801}
       >
         <mesh
           geometry={nodes.light_body.geometry}
           material={materials.T_hanging_lights_1001}
           position={[-0.194, -3.216, 0.118]}
+          castShadow
         />
         <mesh
           geometry={nodes.light_bulb.geometry}
@@ -158,21 +267,25 @@ export function MOdel(props: JSX.IntrinsicElements['group']) {
       />
       <mesh
         geometry={nodes.floor.geometry}
-        material={materials.floor}
-        scale={[67.234, 0.672, 67.234]}
+        material={floorMaterial}
+        scale={[47.533, 0.672, 32.814]}
+        receiveShadow
       />
       <mesh
         geometry={nodes.ceil_frame.geometry}
-        material={materials.ceil_frame}
+        material={ceilFrameMaterial}
         position={[0, 30.306, 0]}
-        scale={[67.234, 0.672, 67.234]}
+        scale={[47.533, 0.672, 32.814]}
+        receiveShadow
+        castShadow
       />
       <mesh
         geometry={nodes.ceil_upper.geometry}
-        material={materials.ceil}
+        material={ceilMaterial}
         position={[0, 32.121, 0]}
         rotation={[-Math.PI, 0, 0]}
-        scale={[67.234, 0.672, 67.234]}
+        scale={[47.533, 0.672, 32.814]}
+        receiveShadow
       />
       <mesh
         geometry={nodes.screen_cable.geometry}
@@ -187,9 +300,12 @@ export function MOdel(props: JSX.IntrinsicElements['group']) {
         position={[18.729, 1.739, 1.265]}
         rotation={[0, 0.971, 0]}
         scale={0.059}
+        castShadow
       />
     </group>
   )
 }
 
 useGLTF.preload('/models/scene.glb')
+
+export default Model
