@@ -19,8 +19,8 @@ const App = () => {
       <Leva collapsed />
       <MenuButton />
       <Sns />
-      <Canvas shadows>
-        <Perf position="top-left" />
+      <Canvas gl={{ antialias: true, alpha: false }} shadows>
+        {/* <Perf position="top-left" /> */}
 
         <ResponsiveCamera />
 

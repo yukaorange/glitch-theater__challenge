@@ -24,12 +24,12 @@ export const ResponsiveCamera = () => {
       if (aspect > 1) {
         // 横長の画面
         radius = 5
-        y = 0.5
+        y = 1.0
         fov = 45
       } else {
         // 縦長の画面
-        radius = 9
-        y = 0.5
+        radius = 10
+        y = 1.0
         fov = 45
       }
 
@@ -54,9 +54,10 @@ export const ResponsiveCamera = () => {
   }, [viewport])
 
   useFrame(() => {
-    const limitedMouseX = THREE.MathUtils.clamp(mouseX, -0.01, 0.01)
+    const limitedMouseX = THREE.MathUtils.clamp(mouseX, -0.05, 0.05)
 
-    const angle = limitedMouseX * Math.PI + Math.PI / 6
+    const angle = limitedMouseX * Math.PI
+    const tiltAngle = Math.PI / 36
 
     const newX = Math.sin(angle) * baseRadius
     const newZ = Math.cos(angle) * baseRadius
@@ -77,7 +78,9 @@ export const ResponsiveCamera = () => {
       0.01,
     )
 
-    cameraRef.current.lookAt(0, 1.5, 0)
+    cameraRef.current.lookAt(0, 1.25, 0)
+
+    cameraRef.current.rotation.z = tiltAngle
 
     cameraRef.current.updateProjectionMatrix()
   })
