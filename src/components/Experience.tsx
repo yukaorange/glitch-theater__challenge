@@ -447,8 +447,8 @@ export const Experience = (): JSX.Element => {
         shadow-mapSize-height={1024}
         shadow-bias={-0.0001}
         position={[2, 5.5, 3]}
-        intensity={0.3}
-        angle={Math.PI / 2.5}
+        intensity={0.63}
+        angle={Math.PI / 6}
         penumbra={0.5}
         visible={true}
       />
@@ -462,9 +462,9 @@ export const Experience = (): JSX.Element => {
         shadow-mapSize-height={1024}
         shadow-bias={-0.0001}
         position={[-2, 2.5, 3]}
-        intensity={0.3}
-        angle={Math.PI / 2.5}
-        penumbra={0.5}
+        intensity={0.4}
+        angle={Math.PI / 2}
+        penumbra={0.64}
         visible={true}
       />
     </>

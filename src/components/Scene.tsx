@@ -13,8 +13,6 @@ import { useFrame } from '@react-three/fiber'
 import screenVertex from '@/shaders/screen-vertex.glsl'
 import screenFragment from '@/shaders/screen-fragment.glsl'
 
-import { MeshReflectorMaterial } from '@react-three/drei'
-
 type GLTFResult = GLTF & {
   nodes: {
     wire_01: THREE.Mesh
@@ -118,6 +116,7 @@ const Model = ({
 
   const initialPositionRef = useRef(0)
   const currentPositionRef = useRef(0)
+  const floorRef = useRef<THREE.Mesh | null>(null)
 
   const sceneHeightRef = useRef(0)
 
@@ -200,6 +199,8 @@ const Model = ({
       )
     }
   }, [texture])
+
+  useEffect(() => {}, [])
 
   useFrame((state) => {
     const { clock } = state
@@ -350,6 +351,7 @@ const Model = ({
           rotation-z={Math.PI}
         />
         <mesh
+          ref={floorRef}
           geometry={nodes.floor.geometry}
           material={floorMaterial}
           scale={[47.533, 0.672, 32.814]}
