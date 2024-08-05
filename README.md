@@ -1,5 +1,5 @@
 # glitch
-[601](https://rokumaruichi.tokyo/)  
+[inspiration from](https://rokumaruichi.tokyo/)  
 [effect composer](https://threejs.org/docs/#manual/en/introduction/How-to-use-post-processing)  
 [glitch nemutas repo](https://github.com/nemutas/glitch)  
 [glitch youtube](https://www.youtube.com/watch?v=zyRCDYmO1VQ)
